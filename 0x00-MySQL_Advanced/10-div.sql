@@ -1,11 +1,11 @@
 -- creates a function SafeDiv that divides (and returns) the first by the second number or returns 0 if the second number is equal to 0.
 DELIMITER //
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS INT DETERMINISTIC
+RETURNS DECIMAL(10, 2) DETERMINISTIC
 BEGIN
-	DECLARE result FLOAT;
+	DECLARE result DECIMAL(10, 2);
 	IF b = 0
-		SET result = 0
+		SET result = 0.00
 	ELSE
 		SET result = a / b;
 	END
