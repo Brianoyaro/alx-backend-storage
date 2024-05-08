@@ -6,8 +6,6 @@ BEGIN
 	IF b = 0 THEN
 		RETURN 0;
 	ENDIF;
-	DECLARE result INT;
-	SET result = a / b;
-	RETURN result;
+	RETURN a / b;
 END//
 DELIMITER ;
