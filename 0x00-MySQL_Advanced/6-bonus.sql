@@ -1,0 +1,6 @@
+DELIMITER **
+CREATE PROCEDURE addBonus(user_id INT, project_name VARCHAR(255), score INT)
+BEGIN
+
+END**
+DELIMITER ;
