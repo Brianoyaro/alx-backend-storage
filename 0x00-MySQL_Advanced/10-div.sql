@@ -3,9 +3,12 @@ DELIMITER //
 CREATE FUNCTION SafeDiv(a INT, b INT)
 RETURNS INT DETERMINISTIC
 BEGIN
-	IF b = 0 THEN
-		RETURN 0;
-	ENDIF;
-	RETURN a / b;
+	DECLARE result FLOAT;
+	IF b = 0
+		SET result = 0
+	ELSE
+		SET result = a / b;
+	END
+	RETURN result;
 END//
 DELIMITER ;
