@@ -1,3 +1,4 @@
+-- creates a stored procedure AddBonus that adds a new correction for a student.
 DELIMITER **
 CREATE PROCEDURE addBonus(user_id INT, project_name VARCHAR(255), score INT)
 BEGIN
