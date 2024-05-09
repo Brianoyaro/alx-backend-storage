@@ -1,9 +1,10 @@
 -- creates a stored procedure ComputeAverageWeightedScoreForUser that computes and store the average weighted score for a student.
 DELIMITER //
+DROP PROCEDURE IF EXISTS  computeAverageWeightedScoreForUser;
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(user_id INT)
-RETURNS INT DETERMINISTIC
 BEGIN
-	UPDATE corrections SET score = (SELECT (score * (SELECT weight FROM projects WHERE projects.id = corrections.projects_id))) WHERE corrections.user_id = user_id;
-	UPDATE users SET average_score = (SELECT AVG(score) FROM corrections WHERE corrections.user_id = user_id) WHERE users.id = user_id;
+	DECLARE average DECIMAL(10, 2);
+	SELECT SUM(corrections.score * projects.weight) / SUM(projects.weight) INTO average FROM corrections JOIN projects ON corrections.project_id = projects.id WHERE corrections.user_id = user_id GROUP BY corrections.user_id;
+	UPDATE users SET average_score = average WHERE users.id = user_id;
 END//
 DELIMITER ;
