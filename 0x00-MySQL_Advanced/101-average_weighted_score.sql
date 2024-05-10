@@ -3,7 +3,14 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUsers;
 CREATE PROCEDURE ComputeAverageWeightedScoreForUsers()
 BEGIN
---	UPDATE users SET average_score = (SELECT SUM(corrections.score * projects.weight) / SUM(projects.weight) FROM corrections JOIN projects ON corrections.project_id = projects.id WHERE corrections.projects_id = projects.id) JOIN corrections ON users.id = corrections.user_id WHERE corrections.user_id = users.id;
-CALL ComputeAverageWeightedScoreForUser((SELECT id FROM users));
+	DECLARE n INT DEFAULT 0;
+	DECLARE i INT DEFAULT 0;
+	SELECT COUNT(*) FROM users INTO n;
+	SET i=1;
+	WHILE i<=n DO
+		CALL ComputeAverageWeightedScoreForUser((SELECT id FROM users WHERE id = i));
+		-- INSERT INTO table_B(ID, VAL) SELECT (ID, VAL) FROM table_A LIMIT i,1;
+		SET i = i + 1;
+	END WHILE;
 END //
 DELIMITER ;
