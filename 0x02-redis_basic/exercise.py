@@ -80,10 +80,3 @@ class Cache():
 
     def get_int(self, val: str) -> Union[int, None]:
         return int(val)
-
-
-cache = Cache()
-cache.store("foo")
-cache.store("bar")
-cache.store(42)
-replay(cache.store)
