@@ -17,6 +17,7 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
     return wrapper
 
+
 class Cache():
     """redis class"""
     def __init__(self):
@@ -29,7 +30,7 @@ class Cache():
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable[..., Any] = None) -> Union[int, str, None, bytes]:
+    def get(self, key: str, fn: Callable = None) -> Union[int, str, None]:
         value = self._redis.get(key)
         if value is not None and fn is not None:
             return fn(value)
