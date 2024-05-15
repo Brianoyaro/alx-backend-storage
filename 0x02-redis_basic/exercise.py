@@ -7,8 +7,17 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
+    """wrapper around Cache.store method
+    Args:
+        method-> function wrapped around this function
+    Return:
+        the calling method but first sets/increments the number
+        of times the function is called"""
     @wraps(method)
     def wrapper(self, *args, **kwargs):
+        """implements the wrapping functionality
+        https://docs.python.org/3.7/library/functools.html#functools.wraps
+        """
         key = method.__qualname__
         if self._redis.get(key) is None:
             self._redis.set(key, 1)
