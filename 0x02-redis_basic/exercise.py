@@ -39,6 +39,21 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(method: Callable) -> None:
+    input_keys = "{}:inputs".format(method.__qualname__)
+    output_keys = "{}:outputs".format(method.__qualname__)
+    inputs = cache._redis.lrange(
+            "{}:inputs".format(cache.store.__qualname__), 0, -1)
+    outputs = cache._redis.lrange(
+            "{}:outputs".format(cache.store.__qualname__), 0, -1)
+    values = dict(zip(inputs, outputs))
+    times = cache.get(cache.store.__qualname__)
+    print("Cache.store was called {} times:".format(times.decode('utf-8')))
+    for key, value in values.items():
+        print("Cache.store(*{}) -> {}".format(
+            key.decode('utf-8'), value.decode('utf-8')))
+
+
 class Cache():
     """redis class"""
     def __init__(self):
@@ -65,3 +80,10 @@ class Cache():
 
     def get_int(self, val: str) -> Union[int, None]:
         return int(val)
+
+
+cache = Cache()
+cache.store("foo")
+cache.store("bar")
+cache.store(42)
+replay(cache.store)
